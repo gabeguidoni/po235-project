@@ -1,16 +1,31 @@
 import streamlit as st
+from pdf_handler import pdf_handler
 
 st.set_page_config(page_title="Leitor de PDFs", page_icon="📄")
 
-st.title("📄 Carregue aqui os relatórios")
+st.title("📄 Carregue aqui o relatório")
 
-arquivos = st.file_uploader(
-    "Envie um ou mais relatórios em PDF", type=["pdf"], accept_multiple_files=True
+arquivo = st.file_uploader(
+    "Envie o relatório simplificado", type=["pdf"], accept_multiple_files=False
 )
 
-if arquivos:
-    st.subheader("Arquivos recebidos")
-    for i, f in enumerate(arquivos, start=1):
-        st.write(f"{i}. {f.name}")
+if arquivo:
+    new_file = pdf_handler(arquivo, arquivo.name)
+    st.subheader("Labels desse relatório")
+    st.write(new_file)
 else:
     st.info("Nenhum arquivo enviado.")
+
+# --- Rodapé ---
+st.markdown(
+    """
+    <hr>
+    <div style='text-align: left; color: gray;'>
+        Desenvolvido para a disciplina de Pós Graduação no ITA PO-235 por:
+        <br>Gabriel Guidoni
+        <br>Danilo Matos
+        <br>Daniel Monteiro
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
